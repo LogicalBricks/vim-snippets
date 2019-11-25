@@ -6,14 +6,34 @@ priority -50
 
 global !p
 
-def write_instance_vars(arglist, snip):
+def write_instance_vars(arglist, snip, additional_indent = False):
+	if additional_indent: snip >> 1
 	args = str(arglist).split(',')
 	for arg in args:
 		name = arg.strip().replace(':', ' ').split(' ', 1)[0]
 		if name:
 			snip += '  @{} = {}'.format(name, name)
-		else:
+		elif len(args) > 1 or len(args[0]) > 0:
 			snip += ''
+		else:
+			snip.rv = ''
+
+def write_instance_accessors(arglist, snip):
+	args = str(arglist).split(',')
+	for i, arg in enumerate(args):
+		if i == 0 and len(arg) != 0:
+			snip += snip.mkline("  attr_accessor ")
+		name = arg.strip().replace(':', ' ').split(' ', 1)[0]
+		if name:
+			if i != 0:
+				snip.rv += ', '
+			snip.rv += ':{}'.format(name)
+		elif i != 0:
+			snip.rv += ','
+	if len(args) > 1 or len(args[0]) > 0:
+		snip += ''
+	else:
+		snip.rv = ''
 
 endglobal
 
@@ -39,6 +59,13 @@ endsnippet
 
 snippet defi "def initialize ..."
 def initialize($1)`!p write_instance_vars(t[1],snip)`$0
+end
+endsnippet
+
+snippet classi "class with initialize ..."
+class ${1:`!p snip.rv = snip.basename.title().replace('_', '')`}`!p write_instance_accessors(t[2], snip)`
+  def initialize($2)`!p write_instance_vars(t[2], snip, additional_indent = True)`$0
+  end
 end
 endsnippet
 
