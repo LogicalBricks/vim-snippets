@@ -74,92 +74,79 @@ $0
 endsnippet
 
 snippet resources "Create resources controller class"
-class ${1:Model}sController < ApplicationController
-	before_action :find_${1/./\l$0/}, only: [:show, :edit, :update, :destroy]
+class ${1:`!p snip.rv = snip.basename.title().replace('_', '').replace('sController', '')`}sController < ApplicationController
+	before_action :set_${1/([A-Z][a-z]+)([A-Z]|$)/\l$1(?2:_\l$2)/g}, only: [:show, :edit, :update, :destroy]
 
-	# GET /${1/./\l$0/}s
-	# GET /${1/./\l$0/}s.json
+	# GET /${1/([A-Z][a-z]+)([A-Z]|$)/\l$1(?2:_\l$2)/g}s
+	# GET /${1/([A-Z][a-z]+)([A-Z]|$)/\l$1(?2:_\l$2)/g}s.json
 	def index
-		@${1/./\l$0/}s = ${1:Model}.all
-
-		respond_to do |wants|
-			wants.html # index.html.erb
-			wants.json  { render json: @${1/./\l$0/}s }
-		end
+		@${1/([A-Z][a-z]+)([A-Z]|$)/\l$1(?2:_\l$2)/g}s = $1.all
 	end
 
-	# GET /${1/./\l$0/}s/1
-	# GET /${1/./\l$0/}s/1.json
+	# GET /${1/([A-Z][a-z]+)([A-Z]|$)/\l$1(?2:_\l$2)/g}s/1
+	# GET /${1/([A-Z][a-z]+)([A-Z]|$)/\l$1(?2:_\l$2)/g}s/1.json
 	def show
-		respond_to do |wants|
-			wants.html # show.html.erb
-			wants.json  { render json: @${1/./\l$0/} }
-		end
 	end
 
-	# GET /${1/./\l$0/}s/new
-	# GET /${1/./\l$0/}s/new.json
+	# GET /${1/([A-Z][a-z]+)([A-Z]|$)/\l$1(?2:_\l$2)/g}s/new
 	def new
-		@${1/./\l$0/} = ${1:Model}.new
-
-		respond_to do |wants|
-			wants.html # new.html.erb
-			wants.json  { render json: @${1/./\l$0/} }
-		end
+		@${1/([A-Z][a-z]+)([A-Z]|$)/\l$1(?2:_\l$2)/g} = $1.new
 	end
 
-	# GET /${1/./\l$0/}s/1/edit
+	# GET /${1/([A-Z][a-z]+)([A-Z]|$)/\l$1(?2:_\l$2)/g}s/1/edit
 	def edit
 	end
 
-	# POST /${1/./\l$0/}s
-	# POST /${1/./\l$0/}s.json
+	# POST /${1/([A-Z][a-z]+)([A-Z]|$)/\l$1(?2:_\l$2)/g}s
+	# POST /${1/([A-Z][a-z]+)([A-Z]|$)/\l$1(?2:_\l$2)/g}s.json
 	def create
-		@${1/./\l$0/} = ${1:Model}.new(params[:${1/./\l$0/}])
+		@${1/([A-Z][a-z]+)([A-Z]|$)/\l$1(?2:_\l$2)/g} = $1.new(${1/([A-Z][a-z]+)([A-Z]|$)/\l$1(?2:_\l$2)/g}_params)
 
-		respond_to do |wants|
-			if @${1/./\l$0/}.save
-				flash[:notice] = '${1:Model} was successfully created.'
-				wants.html { redirect_to(@${1/./\l$0/}) }
-				wants.json  { render json: @${1/./\l$0/}, status: :created, location: @${1/./\l$0/} }
+		respond_to do |format|
+			if @${1/([A-Z][a-z]+)([A-Z]|$)/\l$1(?2:_\l$2)/g}.save
+				format.html { redirect_to @${1/([A-Z][a-z]+)([A-Z]|$)/\l$1(?2:_\l$2)/g}, notice: '${1/([A-Z][a-z]+)([A-Z]|$)/$1(?2: \l$2)/g} was successfully created.' }
+				format.json { render :show, status: :created, location: @${1/([A-Z][a-z]+)([A-Z]|$)/\l$1(?2:_\l$2)/g} }
 			else
-				wants.html { render action: "new" }
-				wants.json  { render json: @${1/./\l$0/}.errors, status: :unprocessable_entity }
+				format.html { render :new }
+				format.json { render json: @${1/([A-Z][a-z]+)([A-Z]|$)/\l$1(?2:_\l$2)/g}.errors, status: :unprocessable_entity }
 			end
 		end
 	end
 
-	# PUT /${1/./\l$0/}s/1
-	# PUT /${1/./\l$0/}s/1.json
+	# PUT /${1/([A-Z][a-z]+)([A-Z]|$)/\l$1(?2:_\l$2)/g}s/1
+	# PUT /${1/([A-Z][a-z]+)([A-Z]|$)/\l$1(?2:_\l$2)/g}s/1.json
 	def update
-		respond_to do |wants|
-			if @${1/./\l$0/}.update(params[:${1/./\l$0/}])
-				flash[:notice] = '${1:Model} was successfully updated.'
-				wants.html { redirect_to(@${1/./\l$0/}) }
-				wants.json  { head :ok }
+		respond_to do |format|
+			if @${1/([A-Z][a-z]+)([A-Z]|$)/\l$1(?2:_\l$2)/g}.update(${1/([A-Z][a-z]+)([A-Z]|$)/\l$1(?2:_\l$2)/g}_params)
+				format.html { redirect_to @${1/([A-Z][a-z]+)([A-Z]|$)/\l$1(?2:_\l$2)/g}, notice: '${1/([A-Z][a-z]+)([A-Z]|$)/$1(?2: \l$2)/g} was successfully updated.' }
+				format.json { render :show, status: :ok, location: @${1/([A-Z][a-z]+)([A-Z]|$)/\l$1(?2:_\l$2)/g} }
 			else
-				wants.html { render action: "edit" }
-				wants.json  { render json: @${1/./\l$0/}.errors, status: :unprocessable_entity }
+				format.html { render :edit }
+				format.json { render json: @${1/([A-Z][a-z]+)([A-Z]|$)/\l$1(?2:_\l$2)/g}.errors, status: :unprocessable_entity }
 			end
 		end
 	end
 
-	# DELETE /${1/./\l$0/}s/1
-	# DELETE /${1/./\l$0/}s/1.json
+	# DELETE /${1/([A-Z][a-z]+)([A-Z]|$)/\l$1(?2:_\l$2)/g}s/1
+	# DELETE /${1/([A-Z][a-z]+)([A-Z]|$)/\l$1(?2:_\l$2)/g}s/1.json
 	def destroy
-		@${1/./\l$0/}.destroy
-
-		respond_to do |wants|
-			wants.html { redirect_to(${1/./\l$0/}s_url) }
-			wants.json  { head :ok }
+		@${1/([A-Z][a-z]+)([A-Z]|$)/\l$1(?2:_\l$2)/g}.destroy
+		respond_to do |format|
+			format.html { redirect_to(${1/([A-Z][a-z]+)([A-Z]|$)/\l$1(?2:_\l$2)/g}s_url, notice: '$1 was successfully destroyed.') }
+			format.json { head :no_content }
 		end
 	end
 
 	private
-		def find_${1/./\l$0/}
-			@${1/./\l$0/} = ${1:Model}.find(params[:id])
+		# Use callbacks to share common setup or constraints between actions.
+		def find_${1/([A-Z][a-z]+)([A-Z]|$)/\l$1(?2:_\l$2)/g}
+			@${1/([A-Z][a-z]+)([A-Z]|$)/\l$1(?2:_\l$2)/g} = $1.find(params[:id])
 		end
 
+		# Never trust parameters from the scary internet, only allow the white list through.
+		def ${1/([A-Z][a-z]+)([A-Z]|$)/\l$1(?2:_\l$2)/g}_params
+			params.require(:${1/([A-Z][a-z]+)([A-Z]|$)/\l$1(?2:_\l$2)/g}).permit(:${2:attributes})
+		end
 end
 
 endsnippet
@@ -333,16 +320,15 @@ endsnippet
 
 snippet defcreate "def create - resource"
 def create
-	@${1:model} = ${2:${1/[[:alpha:]]+|(_)/(?1::\u$0)/g}}.new(params[:$1])
+	@${1:`!p snip.rv = snip.basename.replace('s_controller', '')`} = ${1/(_|^)([a-z])/\u$2/g}.new($1_params)
 	$0
-	respond_to do |wants|
+	respond_to do |format|
 		if @$1.save
-			flash[:notice] = '$2 was successfully created.'
-			wants.html { redirect_to(@$1) }
-			wants.json { render json: @$1, status: :created, location: @$1 }
+			format.html { redirect_to(@$1, notice: '${1/(_|^)([a-z])/(?1: \l$2:\u$2)/g} was successfully created.') }
+			format.json { render :show, status: :created, location: @$1 }
 		else
-			wants.html { render action: "new" }
-			wants.json { render json: @$1.errors, status: :unprocessable_entity }
+			format.html { render action: :new }
+			format.json { render json: @$1.errors, status: :unprocessable_entity }
 		end
 	end
 end
@@ -596,8 +582,8 @@ end
 endsnippet
 
 snippet rest "respond_to"
-respond_to do |wants|
-	wants.${1:html}${2: { $0 }}
+respond_to do |format|
+	format.${1:html}${2: { $0 }}
 end
 endsnippet
 
